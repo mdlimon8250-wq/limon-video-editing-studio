@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Limon Video Editing Studio</title>
+<style>
+:root{--bg:#16181d;--pn:#1e2128;--ln:#2e323b;--tx:#e6e8ec;--mu:#8b92a0;--ac:#f2a516}
+*{box-sizing:border-box}body{margin:0;height:100vh;display:grid;grid-template:44px 1fr 270px/230px 1fr 310px;background:var(--bg);color:var(--tx);font:13px system-ui,sans-serif}
+header{grid-column:1/4;display:flex;gap:6px;align-items:center;padding:0 10px;border-bottom:1px solid var(--ln)}header b{margin-right:12px;font-size:15px}#msg{margin-left:auto;color:var(--mu)}
+button,select,input{background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:5px;padding:5px 9px;font:inherit}button{cursor:pointer}button:hover{border-color:var(--ac)}button.p{background:var(--ac);color:#111;border-color:var(--ac);font-weight:600}
+section{padding:10px;overflow:auto;border-right:1px solid var(--ln)}h3{margin:0 0 8px;font-size:12px;color:var(--mu);font-weight:600}
+.mi{display:flex;justify-content:space-between;gap:6px;padding:6px;border:1px solid var(--ln);border-radius:5px;margin-bottom:5px}.mi span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pv{display:flex;flex-direction:column;align-items:center;gap:8px}#stage{position:relative;aspect-ratio:16/9;max-height:calc(100% - 40px);max-width:100%;background:#000;flex:1}
+#stage video,#stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none}
+#cap{position:absolute;left:5%;right:5%;bottom:7%;text-align:center;font-weight:700;font-size:22px;color:#fff;text-shadow:0 0 4px #000,0 0 4px #000}
+#bar{display:flex;gap:6px;align-items:center}
+#side label{display:grid;grid-template-columns:90px 1fr;align-items:center;margin-bottom:7px;color:var(--mu)}
+.cap{display:grid;grid-template-columns:52px 52px 1fr 24px;gap:3px;margin-bottom:4px}.cap input{padding:3px 4px;min-width:0}
+#tl{grid-column:1/4;overflow:auto;border-top:1px solid var(--ln);position:relative}
+#tracks{position:relative;min-height:100%;padding-left:60px}
+#ruler{height:22px;border-bottom:1px solid var(--ln);position:relative;color:var(--mu);font-size:10px}#ruler i{position:absolute;top:4px;padding-left:3px;border-left:1px solid var(--ln);height:18px;font-style:normal}
+.row{height:64px;border-bottom:1px solid var(--ln);position:relative}.lab{position:absolute;left:-58px;top:22px;color:var(--mu)}
+.clip{position:absolute;top:6px;height:52px;border-radius:5px;background:#3a4a63;border:1px solid #55688a;padding:4px 6px;overflow:hidden;white-space:nowrap;cursor:pointer}#ta .clip{background:#2f5a4b;border-color:#4a8a73;cursor:grab}.clip.sel{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+#ph{position:absolute;top:0;bottom:0;width:2px;background:var(--ac);pointer-events:none;margin-left:60px}
+</style></head><body>
+<header><b>Limon Video Editing Studio</b><button id="imp">Import</button><button id="sv">Save</button><button id="ld">Open</button><button id="ex" class="p">Export MP4</button><span id="msg"></span></header>
+<section><h3>Media (click + to add to timeline)</h3><div id="ml"></div></section>
+<section id="pv"><div id="stage"><video id="vid"></video><img id="img"><div id="cap"></div></div><audio id="aud"></audio>
+<div id="bar"><button id="pl">Play</button><button id="sp1">Split (S)</button><button id="dl">Delete</button><button id="mL">◀ Move</button><button id="mR">Move ▶</button><button id="zo">−</button><button id="zi">+</button><span id="tm">0:00.0</span></div></section>
+<section id="side"><h3>Selected clip</h3>
+<label>Speed<input id="sp" type="number" min=".25" max="4" step=".25" value="1"></label>
+<label>Volume<input id="vo" type="range" min="0" max="2" step=".05" value="1"></label>
+<label>Brightness<input id="br" type="range" min="-.5" max=".5" step=".02" value="0"></label>
+<label>Contrast<input id="co" type="range" min=".5" max="2" step=".05" value="1"></label>
+<label>Saturation<input id="sa" type="range" min="0" max="3" step=".05" value="1"></label>
+<label>Look<select id="pr"><option value="none">None</option><option value="bw">Black &amp; white</option><option value="sepia">Sepia</option><option value="warm">Warm</option><option value="cool">Cool</option><option value="vivid">Vivid</option></select></label>
+<label>Transition<select id="tr"><option value="none">None</option><option value="fade">Fade in/out</option></select></label>
+<h3 style="margin-top:14px">Captions</h3>
+<label>Language<select id="lg"><option value="bengali">Bengali</option><option value="english">English</option><option value="hindi">Hindi</option><option value="arabic">Arabic</option><option value="auto">Auto-detect</option></select></label>
+<label>Quality<select id="md"><option value="tiny">Fast (tiny)</option><option value="base" selected>Balanced (base)</option><option value="small">Best (small, slow)</option></select></label>
+<button id="ac" class="p" style="width:100%;margin-bottom:6px">Auto captions</button><button id="ad" style="width:100%;margin-bottom:8px">Add caption at playhead</button>
+<label>Font<input id="fo" value="Arial"></label><label>Size<input id="fs" type="number" value="42"></label><label>Color<input id="fc" type="color" value="#ffffff"></label>
+<div id="caps"></div></section>
+<div id="tl"><div id="tracks"><div id="ruler"></div><div class="row" id="tv"><span class="lab">Video</span></div><div class="row" id="ta"><span class="lab">Audio</span></div><div id="ph"></div></div></div>
+<script src="renderer.js"></script></body></html>

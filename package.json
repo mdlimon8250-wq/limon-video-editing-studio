@@ -1,0 +1,4 @@
+{"name":"limon-video-editing-studio","version":"1.0.0","description":"Simple video editor with auto captions","main":"main.js","author":"Limon <me@example.com>","scripts":{"start":"electron .","dist":"electron-builder --publish never"},
+"dependencies":{"@xenova/transformers":"^2.17.2","ffmpeg-static":"^5.2.0"},
+"devDependencies":{"electron":"^31.0.0","electron-builder":"^24.13.3"},
+"build":{"appId":"com.limon.videoeditingstudio","productName":"Limon Video Editing Studio","asar":false,"win":{"target":"nsis"},"mac":{"target":"dmg"},"linux":{"target":"AppImage"}}}
